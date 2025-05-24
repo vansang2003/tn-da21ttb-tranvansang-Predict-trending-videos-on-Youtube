@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Phân tích video trending</h1>
+    
+    <div class="row">
+        <!-- Biểu đồ tương quan lượt xem và lượt thích -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="view_like_correlation"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Biểu đồ phân bố thời lượng -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="duration_distribution"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Biểu đồ top kênh -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="top_channels"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Biểu đồ tương quan người đăng ký và lượt xem -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="subscriber_view_correlation"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm Plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- Hiển thị các biểu đồ -->
+<script>
+    var graphs = {{ graphs|safe }};
+    
+    Plotly.newPlot('view_like_correlation', JSON.parse(graphs.view_like_correlation).data, JSON.parse(graphs.view_like_correlation).layout);
+    Plotly.newPlot('duration_distribution', JSON.parse(graphs.duration_distribution).data, JSON.parse(graphs.duration_distribution).layout);
+    Plotly.newPlot('top_channels', JSON.parse(graphs.top_channels).data, JSON.parse(graphs.top_channels).layout);
+    Plotly.newPlot('subscriber_view_correlation', JSON.parse(graphs.subscriber_view_correlation).data, JSON.parse(graphs.subscriber_view_correlation).layout);
+</script>
+{% endblock %} 

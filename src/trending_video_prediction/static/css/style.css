@@ -1,0 +1,92 @@
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.video-card {
+    margin-bottom: 20px;
+}
+
+.video-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.video-card .card-body {
+    padding: 15px;
+}
+
+.video-card .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-card .card-text {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.stats-card {
+    text-align: center;
+}
+
+.stats-card .card-title {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.stats-card .card-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+#searchInput {
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.form-select {
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.btn-primary {
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-link {
+    border-radius: 20px;
+    margin: 0 5px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.video-card {
+    animation: fadeIn 0.5s ease-out;
+} 

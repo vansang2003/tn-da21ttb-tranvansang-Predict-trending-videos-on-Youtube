@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân tích video trending</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Phân tích video trending</h1>
+        
+        <!-- Thống kê tổng quan -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-2">Tổng số video</h3>
+                <p class="text-3xl font-bold text-blue-600">{{ total_videos }}</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-2">Video trending</h3>
+                <p class="text-3xl font-bold text-green-600">{{ total_trending }}</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-2">Tỷ lệ trending</h3>
+                <p class="text-3xl font-bold text-purple-600">{{ trending_rate|floatformat:1 }}%</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-2">Lượt xem trung bình</h3>
+                <p class="text-3xl font-bold text-orange-600">{{ avg_views|floatformat:0 }}</p>
+            </div>
+        </div>
+
+        <!-- Biểu đồ phân tích -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Tương quan lượt xem và lượt thích -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Tương quan lượt xem và lượt thích</h3>
+                <div id="view_like_correlation" class="w-full h-96"></div>
+            </div>
+
+            <!-- Phân bố thời lượng -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Phân bố thời lượng video</h3>
+                <div id="duration_distribution" class="w-full h-96"></div>
+            </div>
+
+            <!-- Top kênh -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Top 10 kênh trending</h3>
+                <div id="top_channels" class="w-full h-96"></div>
+            </div>
+
+            <!-- Tương quan người đăng ký và lượt xem -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Tương quan người đăng ký và lượt xem</h3>
+                <div id="subscriber_view_correlation" class="w-full h-96"></div>
+            </div>
+        </div>
+
+        <!-- Phân tích theo thể loại -->
+        <div class="mt-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Phân bố theo thể loại</h3>
+                <div id="category_distribution" class="w-full h-96"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var graphs = {{ graphs|safe }};
+        
+        // Hàm hiển thị biểu đồ với loading state
+        function plotChart(elementId, graphData) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = '<div class="flex items-center justify-center h-full"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>';
+            
+            const data = JSON.parse(graphData);
+            Plotly.newPlot(elementId, data.data, data.layout, {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false
+            });
+        }
+        
+        // Hiển thị các biểu đồ
+        plotChart('view_like_correlation', graphs.view_like_correlation);
+        plotChart('duration_distribution', graphs.duration_distribution);
+        plotChart('top_channels', graphs.top_channels);
+        plotChart('subscriber_view_correlation', graphs.subscriber_view_correlation);
+        plotChart('category_distribution', graphs.category_distribution);
+    </script>
+</body>
+</html> 
