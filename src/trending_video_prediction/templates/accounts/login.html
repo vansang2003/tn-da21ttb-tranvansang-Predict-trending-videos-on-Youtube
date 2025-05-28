@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+{% block head_title %}{% trans "Đăng nhập" %}{% endblock %}
+
+{% block content %}
+<div class=" test-bg min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                {% trans "Đăng nhập" %}
+            </h2>
+        </div>
+
+        {% get_providers as socialaccount_providers %}
+
+        {% if socialaccount_providers %}
+        <div class="mt-8 space-y-6">
+            <div class="rounded-md shadow-sm -space-y-px">
+                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+            </div>
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">
+                        {% trans 'hoặc' %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        {% include "socialaccount/snippets/login_extra.html" %}
+        {% endif %}
+
+        <form class="mt-8 space-y-6" method="POST" action="{% url 'account_login' %}">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="rounded-md bg-red-50 p-4">
+                <div class="flex">
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            {% endfor %}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="id_login" class="sr-only">{% trans "Tên đăng nhập hoặc email" %}</label>
+                    <input id="id_login" name="login" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="{% trans 'Tên đăng nhập hoặc email' %}">
+                </div>
+                <div>
+                    <label for="id_password" class="sr-only">{% trans "Mật khẩu" %}</label>
+                    <input id="id_password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="{% trans 'Mật khẩu' %}">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="id_remember" name="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="id_remember" class="ml-2 block text-sm text-gray-900">
+                        {% trans "Ghi nhớ đăng nhập" %}
+                    </label>
+                </div>
+
+                <div class="text-sm">
+                    <a href="{% url 'account_reset_password' %}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                        {% trans "Quên mật khẩu?" %}
+                    </a>
+                </div>
+            </div>
+
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    {% trans "Đăng nhập" %}
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center">
+            <p class="text-sm text-gray-600">
+                {% blocktrans %}Chưa có tài khoản? <a href="{{ signup_url }}" class="font-medium text-indigo-600 hover:text-indigo-500">Đăng ký</a>{% endblocktrans %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %} 
